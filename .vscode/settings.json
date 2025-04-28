@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "cvkcv181x.h": "c",
+        "stdlib.h": "c",
+        "string.h": "c",
+        "cv181x_tpu_cfg.h": "c",
+        "cvikernel.h": "c"
+    }
+}
