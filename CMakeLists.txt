@@ -12,6 +12,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${SAFETY_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SAFETY_FLAGS}")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+#Specify the header files to be installed and their target directory
 install(FILES include/bmkernel/bm_kernel.h
   DESTINATION include/bmkernel)
 install(FILES include/bmkernel/bm_kernel_legacy.h
@@ -74,9 +75,12 @@ install(FILES include/cvikernel/cvk_vlc_compress.h
   DESTINATION include/cvikernel)
 enable_testing()
 
+#Add the specified directory to the list of directories to search for header files during compilation.
 include_directories(include)
 include_directories(src)
+include_directories(tests)
 
+#Collect all files matching the specified pattern into a variable.
 file(GLOB COMMON_SOURCES "src/*.c")
 file(GLOB_RECURSE BM1822_SOURCES "src/bm1822/*.c")
 file(GLOB_RECURSE BM1880v2_SOURCES "src/bm1880v2/*.c")
@@ -85,6 +89,7 @@ file(GLOB_RECURSE CV1880v2_SOURCES "src/cv1880v2/*.c")
 file(GLOB_RECURSE CV181X_SOURCES "src/cv181x/*.c")
 file(GLOB_RECURSE CV180X_SOURCES "src/cv180x/*.c")
 
+#Set the variable to the specified value.
 SET(_SOURCES ${COMMON_SOURCES})
 SET(_SOURCES ${_SOURCES} ${BM1822_SOURCES})
 SET(_SOURCES ${_SOURCES} ${CV1822_SOURCES})
@@ -119,10 +124,12 @@ endif()
 #file(GLOB_RECURSE CHECK_SOURCE "src/bm1880v2/non_atomic/*.c")
 #set_source_files_properties(${CHECK_SOURCE} PROPERTIES LANGUAGE CXX )
 
+#Add a library to the project using the specified source files.
 add_library(cvikernel SHARED ${_SOURCES})
 add_library(cvikernel-static STATIC ${_SOURCES})
 target_link_libraries(cvikernel m) # m for <math.h>
 
 install(TARGETS cvikernel cvikernel-static DESTINATION lib)
 
+add_subdirectory(tests)
 set(CVI_LIBS ${CVI_LIBS} cvikernel)
